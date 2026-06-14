@@ -178,72 +178,6 @@ homeagent/
 
 ---
 
-## Setup & Deployment
-
-### Prerequisites
-- A Google account
-- A Firebase project (free Spark plan is enough)
-
-### Step 1 — Firebase Setup
-
-1. Go to [console.firebase.google.com](https://console.firebase.google.com)
-2. Create a new project → disable Analytics → **Create project**
-3. **Authentication** → Get started → Sign-in method → **Google** → Enable → Save
-4. **Firestore Database** → Create database → Start in test mode → Region: `asia-northeast1 (Tokyo)` → Done
-5. **Project Settings** → Your apps → `</>` Web → Register app → Copy the config
-
-### Step 2 — Add Firebase Config
-
-Open `js/firebase-config.js` and replace the placeholder values:
-
-```javascript
-const firebaseConfig = {
-  apiKey:            "AIzaSy...",
-  authDomain:        "your-project.firebaseapp.com",
-  projectId:         "your-project",
-  storageBucket:     "your-project.appspot.com",
-  messagingSenderId: "123456789",
-  appId:             "1:123:web:abc123"
-};
-```
-
-### Step 3 — Firestore Security Rules
-
-Firebase Console → Firestore → **Rules** tab → Paste and publish:
-
-```
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /users/{userId}/{document=**} {
-      allow read, write: if request.auth != null
-                         && request.auth.uid == userId;
-    }
-  }
-}
-```
-
-### Step 4 — Deploy to Netlify
-
-1. Go to [app.netlify.com](https://app.netlify.com) → **Add new site → Deploy manually**
-2. Drag and drop the **`homeagent_final.zip`** into the deploy box
-3. Wait 10 seconds → live URL assigned
-
-### Step 5 — Authorize Your Domain
-
-Firebase Console → Authentication → **Settings** → Authorized domains → **Add domain** → paste your `*.netlify.app` URL
-
-### Step 6 — Test
-
-| Action | Expected |
-|--------|----------|
-| Open site | Styled login page |
-| Sign in with Google | → Onboarding (5 steps) |
-| Complete onboarding | → Dashboard, agents start running |
-| Sign in again | → Dashboard directly (onboarding skipped) |
-
----
-
 ## How It Works
 
 ### User Journey
@@ -317,28 +251,6 @@ runAgentPipeline(userId)
 
 ---
 
-## Future Roadmap
-
-### Phase 2 (Next 3 months)
-- [ ] Gmail receipt OCR via Cloud Functions
-- [ ] UPI/SMS bank transaction parsing
-- [ ] Real Blinkit & Zepto API integration via FastAPI backend
-- [ ] WhatsApp notifications via Twilio
-
-### Phase 3 (6 months)
-- [ ] Prophet-based time-series forecasting
-- [ ] Seasonal pattern detection (festivals, monsoon, etc.)
-- [ ] Price tracking across platforms
-- [ ] Group household sharing (multi-user)
-- [ ] Mobile app (React Native)
-
-### Phase 4 (12 months)
-- [ ] Computer vision pantry scanning via phone camera
-- [ ] Voice commands ("Hey HomeAgent, add milk")
-- [ ] Integration with smart home devices
-- [ ] B2B version for small restaurants and offices
-
----
 
 ## Why This Wins
 
@@ -348,22 +260,10 @@ runAgentPipeline(userId)
 | **AI-native** | 7 specialized agents, not a CRUD app with AI sprinkled on |
 | **Learns** | Self-improving consumption model — gets smarter every week |
 | **Privacy-first** | All data in user's own Firestore — no third-party servers |
-| **Deployable** | Zero build tools — live on Netlify in 10 minutes |
 | **Scalable architecture** | Agent pattern scales from 1 household to 1 million |
 
 ---
 
-## Team
-
-**Harsh** — Electronics & Instrumentation Engineering
-NIT Agartala, Batch 2024–2028
-
-- Full-stack development
-- Multi-agent system design
-- Firebase architecture
-- UI/UX design
-
----
 
 ## License
 
